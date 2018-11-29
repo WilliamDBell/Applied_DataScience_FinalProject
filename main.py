@@ -2,6 +2,8 @@ import requests
 import csv
 import json
 import os.path
+import pandas as pd
+import datetime
 
 API_KEY = '2520FD98-BA2D-356A-8A02-9FE608339890' 
 GET_URL = 'http://quickstats.nass.usda.gov/api/api_GET' # url to request data from
@@ -21,11 +23,54 @@ GET_PARAMS = { # params to specifiy request
     }
 
 
-def get_turkey_data(url, params, file_path):
-    response = requests.get(url, params=params)
+'''
+We’ll use data obtained from the National Agricultural Statistics Service API. First,
+request an API key via https://quickstats.nass.usda.gov/api
+API Documentation is located on the same page under “Usage”
+Create an API request to return data for all TURKEYS described as "TURKEYS,
+YOUNG, SLAUGHTER, FI - SLAUGHTERED, MEASURED IN HEAD" in Virginia
+for each month for each year available 1989 - 2018. Save this data in a format that you
+can reuse.
+Include the API command you used in your project report.
+'''
+def do_part_one():
+    response = requests.get(GET_URL, params=GET_PARAMS)
     with open(DATA_FILE, "wb") as file:
         file.write(response.content)
 
+
+
+'''(a) Create a line plot of the Value for each month of your data set from 1989-2002 and
+2009-2018. Include the plot in your report. Note: There is a gap in your data between
+2002 and 2009.
+(b) Report any Structure you find, and any hypotheses you have about that structure.
+(c) Report mean and median of the Value grouped by year
+'''
+def do_part_two(data_frame): # get all values from ' values ' column between 1989 - 2002 and 2009 - 2018
+    before_2002 = data_frame[data_frame['year'] < 2003] # part A
+    between_2002_2018 = data_frame[ (data_frame['year'] > 2008) & (data_frame['year'] < 2019) ] # part A
+    pass
+
+
+
+'''(a) For just the data from 2017, fit a linear regression to your data for the months January
+– October
+(b) Using your linear fit, predict the value of turkeys as described for November
+(c) Compute the absolute error between your predicted value and the actual value of
+turkeys slaughtered in Virginia in Nov 2017
+(d) Compute the coefficient of determination, or R^2 value, to determine how well your
+model fits your data.
+(e) Plot a line plot of Values from 2017 along with the linear fit.
+Report on (a)-(e).
+'''
+def do_part_three():
+    pass
+
+
+
 if __name__ == '__main__':
     if not os.path.isfile(DATA_FILE):
-        get_turkey_data(GET_URL, GET_PARAMS, DATA_FILE)
+        do_part_one()
+    data_frame = pd.read_csv(DATA_FILE)
+    do_part_two(data_frame)
+    do_part_three()
