@@ -39,8 +39,6 @@ def do_part_one():
     with open(DATA_FILE, "wb") as file:
         file.write(response.content)
 
-
-
 '''(a) Create a line plot of the Value for each month of your data set from 1989-2002 and
 2009-2018. Include the plot in your report. Note: There is a gap in your data between
 2002 and 2009.
@@ -52,8 +50,8 @@ def do_part_two(data_frame):
     data_2 = data_frame[data_frame['year'] > 2008]
     data = pd.concat([data, data_2])
     data['Value'] = pd.to_numeric(data['Value'])
-    data.plot(kind='line', x='reference_period_desc', y='Value')
-    #plt.show()
+    fig = data.plot(kind='line', x='reference_period_desc', y='Value').get_figure()
+    fig.savefig('turkey_line_plot.pdf')
     print(data['Value'].mean())
     print(data['Value'].median())
 
