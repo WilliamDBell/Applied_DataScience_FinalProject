@@ -4,6 +4,7 @@ import json
 import os.path
 import pandas as pd
 import datetime
+from matplotlib import pyplot as plt
 
 API_KEY = '2520FD98-BA2D-356A-8A02-9FE608339890' 
 GET_URL = 'http://quickstats.nass.usda.gov/api/api_GET' # url to request data from
@@ -46,12 +47,15 @@ def do_part_one():
 (b) Report any Structure you find, and any hypotheses you have about that structure.
 (c) Report mean and median of the Value grouped by year
 '''
-def do_part_two(data_frame): # get all values from ' values ' column between 1989 - 2002 and 2009 - 2018
-    before_2002 = data_frame[data_frame['year'] < 2003] # part A
-    between_2002_2018 = data_frame[ (data_frame['year'] > 2008) & (data_frame['year'] < 2019) ] # part A
-    pass
-
-
+def do_part_two(data_frame): 
+    data = data_frame[data_frame['year'] < 2003] 
+    data_2 = data_frame[data_frame['year'] > 2008]
+    data = pd.concat([data, data_2])
+    data['Value'] = pd.to_numeric(data['Value'])
+    data.plot(kind='line', x='reference_period_desc', y='Value')
+    #plt.show()
+    print(data['Value'].mean())
+    print(data['Value'].median())
 
 '''(a) For just the data from 2017, fit a linear regression to your data for the months January
 – October
@@ -63,14 +67,12 @@ model fits your data.
 (e) Plot a line plot of Values from 2017 along with the linear fit.
 Report on (a)-(e).
 '''
-def do_part_three():
+def do_part_three(data_frame):
     pass
-
-
 
 if __name__ == '__main__':
     if not os.path.isfile(DATA_FILE):
         do_part_one()
-    data_frame = pd.read_csv(DATA_FILE)
+    data_frame = pd.read_csv(DATA_FILE, thousands=',')
     do_part_two(data_frame)
-    do_part_three()
+    do_part_three(data_frame)
