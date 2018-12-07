@@ -5,6 +5,7 @@ import os.path
 import pandas as pd
 import datetime
 from matplotlib import pyplot as plt
+from sklearn import datasets, linear_model
 
 API_KEY = '2520FD98-BA2D-356A-8A02-9FE608339890'
 GET_URL = 'http://quickstats.nass.usda.gov/api/api_GET' # url to request data from
@@ -52,8 +53,8 @@ def do_part_two(data_frame):
     data['Value'] = pd.to_numeric(data['Value'])
     fig = data.plot(kind='line', x='reference_period_desc', y='Value').get_figure()
     fig.savefig('turkey_line_plot.pdf')
-    print(data['Value'].mean())
-    print(data['Value'].median())
+    print("Mean: " + str(data['Value'].mean()))
+    print("Median: " + str(data['Value'].median()))
 
 '''(a) For just the data from 2017, fit a linear regression to your data for the months January
 - October
@@ -66,7 +67,16 @@ model fits your data.
 Report on (a)-(e).
 '''
 def do_part_three(data_frame):
-    pass
+    data = data_frame[data_frame['year'] == 2017]
+    data = data[data_frame['begin_code'] <= 10]
+    data['Value'] = pd.to_numeric(data['Value'])
+    linear_regr = linear_model.LinearRegression()
+    x = [data['begin_code']]
+    y = [data['Value']]
+    model = linear_regr.fit(x, y)
+
+
+
 
 if __name__ == '__main__':
     if not os.path.isfile(DATA_FILE):
