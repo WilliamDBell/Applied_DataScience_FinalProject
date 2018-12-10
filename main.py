@@ -242,5 +242,5 @@ if __name__ == '__main__':
     if not os.path.isfile(DATA_FILE):
         do_part_one()
     data_frame = pd.read_csv(DATA_FILE, thousands=',')
-    # do_part_two(data_frame)
+    do_part_two(data_frame)
     do_part_three(data_frame)
